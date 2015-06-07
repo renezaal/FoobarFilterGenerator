@@ -50,7 +50,7 @@ namespace FoobarFilterGenerator
         private void OutputTextbox_MouseClick(object sender, MouseEventArgs e)
         {
             // put the output on the clipboard as plain text
-            Clipboard.SetText(OutputTextbox.Text);
+            Clipboard.SetText(outputTextbox.Text);
             // notify the user that the clipboard has been modified
             MessageBox.Show("Text has been copied to clipboard.");
         }
@@ -65,7 +65,7 @@ namespace FoobarFilterGenerator
             _working = true;
 
 
-            string text = ExistingStringTextbox.Text.Trim();
+            string text = existingStringTextbox.Text.Trim();
             if (text[0] == '(')
             {
                 // if the text starts with an opening bracket, assume it is a filter
@@ -78,7 +78,7 @@ namespace FoobarFilterGenerator
             }
 
             // reset the string
-            ExistingStringTextbox.Text = String.Empty;
+            existingStringTextbox.Text = String.Empty;
             // reset the working variable to allow rerunning of the method
             _working = false;
             // update the output field now we're done interpreting
@@ -100,7 +100,8 @@ namespace FoobarFilterGenerator
             StringBuilder sb = new StringBuilder();
 
 
-            // add every artist to the filter
+            // add every artist to the filter after sorting them
+            artistsTextbox.SortLines();
             bool isFirst = true;
             foreach (string artist in artistsTextbox.Lines)
             {
@@ -118,9 +119,27 @@ namespace FoobarFilterGenerator
                 sb.AppendFormat(@"(Artist IS {0})", artist.Trim());
             }
 
+            // add every album to the filter after sorting them
+            albumsTextbox.SortLines();
+            foreach (string album in albumsTextbox.Lines)
+            {
+                if (String.IsNullOrWhiteSpace(album))
+                {
+                    continue;
+                }
+                if (isFirst)
+                {
+                    // put this before the album field if there is no encapsulation yet
+                    sb.Append("("); isFirst = false;
+                }
+                else { sb.Append(" OR "); }
+
+                sb.AppendFormat(@"(Album IS {0})", album.Trim());
+            }
+
             if (!isFirst)
             {
-                // if there was at least one artist, put this at the end of the artist fields
+                // if there was at least one artist or album, put this at the end of the artist fields
                 sb.Append(")");
             }
 
@@ -146,7 +165,7 @@ namespace FoobarFilterGenerator
             }
 
             // set the output
-            OutputTextbox.Text = sb.ToString();
+            outputTextbox.Text = sb.ToString();
             _working = false;
         }
 
@@ -164,6 +183,16 @@ namespace FoobarFilterGenerator
                 string subText = text.Substring(i + artistSearchString.Length, closingBracketIndex);
                 artistsTextbox.AppendLine(subText);
                 text = text.Replace(artistSearchString + subText + ')', "").Trim();
+            }
+
+            // interpret albums
+            string albumSearchString = "(Album IS ";
+            for (int i = text.IndexOf(albumSearchString); i >= 0; i = text.IndexOf(albumSearchString))
+            {
+                int closingBracketIndex = text.Substring(i + albumSearchString.Length).IndexOf(')');
+                string subText = text.Substring(i + albumSearchString.Length, closingBracketIndex);
+                albumsTextbox.AppendLine(subText);
+                text = text.Replace(albumSearchString + subText + ')', "").Trim();
             }
 
             // interpret live filter
@@ -226,6 +255,11 @@ namespace FoobarFilterGenerator
         }
         #endregion
 
+        private void albumsTextbox_TextChanged(object sender, EventArgs e)
+        {
+            updateOutput();
+        }
+
 
     }
 
@@ -243,6 +277,38 @@ namespace FoobarFilterGenerator
                 source.Text = value;
             else
                 source.AppendText(String.Format("\r\n{0}", value));
+        }
+
+        /// <summary>
+        /// Sorts the lines of the textbox while keeping the caret position on the same row
+        /// Assumes no two rows are the same, but if they are, the user will probably not notice anything
+        /// </summary>
+        /// <param name="source">Textbox of which the lines should be sorted</param>
+        public static void SortLines(this TextBox source)
+        {
+            if (String.IsNullOrWhiteSpace(source.Text))
+            {
+                // if there is no text, jump out early to prevent needles cycles and possible crashes
+                return;
+            }
+
+            // pry the lines loose from the textbox
+            string[] lines = source.Lines;
+            // get the string the user is working on
+            string workingString = lines[source.GetLineFromCharIndex(source.SelectionStart)];
+            // get the index of the caret within that string
+            int caretIndex = source.SelectionStart - source.GetFirstCharIndexOfCurrentLine();
+            // sort the acquired lines
+            Array.Sort<string>(lines);
+            // join the lines with linebreaks in between to break them up in lines again
+            // yes, this may sound a bit odd and needless
+            // but we do this to update the textbox component in the way it expects to be updated
+            // this way we prevent any irregularities that may arise from future changes to the component
+            source.Text = String.Join("\r\n", lines);
+            // find the line we were working on
+            int line = Array.IndexOf<string>(source.Lines, workingString);
+            // set the caret to the correct index of the line we were working on
+            source.SelectionStart = source.GetFirstCharIndexFromLine(line) + caretIndex;
         }
     }
 }

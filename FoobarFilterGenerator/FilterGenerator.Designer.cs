@@ -30,8 +30,7 @@
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
-            this.ExistingStringTextbox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.existingStringTextbox = new System.Windows.Forms.TextBox();
             this.artistsTextbox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -39,24 +38,30 @@
             this.cbBitrate = new System.Windows.Forms.CheckBox();
             this.cbFilterLive = new System.Windows.Forms.CheckBox();
             this.cbFilterRemix = new System.Windows.Forms.CheckBox();
-            this.OutputTextbox = new System.Windows.Forms.TextBox();
+            this.outputTextbox = new System.Windows.Forms.TextBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.artistsTab = new System.Windows.Forms.TabPage();
+            this.albumsTab = new System.Windows.Forms.TabPage();
+            this.albumsTextbox = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bitratePicker)).BeginInit();
+            this.tabControl1.SuspendLayout();
+            this.artistsTab.SuspendLayout();
+            this.albumsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.label3);
-            this.flowLayoutPanel1.Controls.Add(this.ExistingStringTextbox);
-            this.flowLayoutPanel1.Controls.Add(this.label1);
-            this.flowLayoutPanel1.Controls.Add(this.artistsTextbox);
+            this.flowLayoutPanel1.Controls.Add(this.existingStringTextbox);
+            this.flowLayoutPanel1.Controls.Add(this.tabControl1);
             this.flowLayoutPanel1.Controls.Add(this.groupBox1);
-            this.flowLayoutPanel1.Controls.Add(this.OutputTextbox);
+            this.flowLayoutPanel1.Controls.Add(this.outputTextbox);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(284, 306);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(321, 371);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // label3
@@ -68,33 +73,23 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "If you already have an existing filter, paste it here";
             // 
-            // ExistingStringTextbox
+            // existingStringTextbox
             // 
-            this.ExistingStringTextbox.Location = new System.Drawing.Point(3, 16);
-            this.ExistingStringTextbox.Name = "ExistingStringTextbox";
-            this.ExistingStringTextbox.Size = new System.Drawing.Size(269, 20);
-            this.ExistingStringTextbox.TabIndex = 6;
-            this.ExistingStringTextbox.TextChanged += new System.EventHandler(this.ExistingStringTextbox_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 39);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(101, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Artists (One per line)";
+            this.existingStringTextbox.Location = new System.Drawing.Point(3, 16);
+            this.existingStringTextbox.Name = "existingStringTextbox";
+            this.existingStringTextbox.Size = new System.Drawing.Size(306, 20);
+            this.existingStringTextbox.TabIndex = 6;
+            this.existingStringTextbox.TextChanged += new System.EventHandler(this.ExistingStringTextbox_TextChanged);
             // 
             // artistsTextbox
             // 
             this.artistsTextbox.AcceptsReturn = true;
-            this.artistsTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.artistsTextbox.Location = new System.Drawing.Point(3, 55);
+            this.artistsTextbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.artistsTextbox.Location = new System.Drawing.Point(3, 3);
             this.artistsTextbox.Multiline = true;
             this.artistsTextbox.Name = "artistsTextbox";
             this.artistsTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.artistsTextbox.Size = new System.Drawing.Size(269, 118);
+            this.artistsTextbox.Size = new System.Drawing.Size(186, 68);
             this.artistsTextbox.TabIndex = 0;
             this.artistsTextbox.WordWrap = false;
             this.artistsTextbox.TextChanged += new System.EventHandler(this.artistsTextbox_TextChanged);
@@ -106,7 +101,7 @@
             this.groupBox1.Controls.Add(this.cbBitrate);
             this.groupBox1.Controls.Add(this.cbFilterLive);
             this.groupBox1.Controls.Add(this.cbFilterRemix);
-            this.groupBox1.Location = new System.Drawing.Point(3, 179);
+            this.groupBox1.Location = new System.Drawing.Point(3, 232);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(269, 100);
             this.groupBox1.TabIndex = 4;
@@ -173,22 +168,65 @@
             this.cbFilterRemix.UseVisualStyleBackColor = true;
             this.cbFilterRemix.CheckedChanged += new System.EventHandler(this.cbFilterRemix_CheckedChanged);
             // 
-            // OutputTextbox
+            // outputTextbox
             // 
-            this.OutputTextbox.Location = new System.Drawing.Point(3, 285);
-            this.OutputTextbox.Name = "OutputTextbox";
-            this.OutputTextbox.ReadOnly = true;
-            this.OutputTextbox.Size = new System.Drawing.Size(269, 20);
-            this.OutputTextbox.TabIndex = 5;
-            this.OutputTextbox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OutputTextbox_MouseClick);
+            this.outputTextbox.Location = new System.Drawing.Point(3, 338);
+            this.outputTextbox.Name = "outputTextbox";
+            this.outputTextbox.ReadOnly = true;
+            this.outputTextbox.Size = new System.Drawing.Size(269, 20);
+            this.outputTextbox.TabIndex = 5;
+            this.outputTextbox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OutputTextbox_MouseClick);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.artistsTab);
+            this.tabControl1.Controls.Add(this.albumsTab);
+            this.tabControl1.Location = new System.Drawing.Point(3, 42);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(306, 184);
+            this.tabControl1.TabIndex = 8;
+            // 
+            // artistsTab
+            // 
+            this.artistsTab.Controls.Add(this.artistsTextbox);
+            this.artistsTab.Location = new System.Drawing.Point(4, 22);
+            this.artistsTab.Name = "artistsTab";
+            this.artistsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.artistsTab.Size = new System.Drawing.Size(192, 74);
+            this.artistsTab.TabIndex = 0;
+            this.artistsTab.Text = "Artists";
+            this.artistsTab.UseVisualStyleBackColor = true;
+            // 
+            // albumsTab
+            // 
+            this.albumsTab.Controls.Add(this.albumsTextbox);
+            this.albumsTab.Location = new System.Drawing.Point(4, 22);
+            this.albumsTab.Name = "albumsTab";
+            this.albumsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.albumsTab.Size = new System.Drawing.Size(298, 158);
+            this.albumsTab.TabIndex = 1;
+            this.albumsTab.Text = "Albums";
+            this.albumsTab.UseVisualStyleBackColor = true;
+            // 
+            // albumsTextbox
+            // 
+            this.albumsTextbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.albumsTextbox.Location = new System.Drawing.Point(3, 3);
+            this.albumsTextbox.Multiline = true;
+            this.albumsTextbox.Name = "albumsTextbox";
+            this.albumsTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.albumsTextbox.Size = new System.Drawing.Size(292, 152);
+            this.albumsTextbox.TabIndex = 0;
+            this.albumsTextbox.TextChanged += new System.EventHandler(this.albumsTextbox_TextChanged);
             // 
             // FilterGenerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 306);
+            this.ClientSize = new System.Drawing.Size(321, 371);
             this.Controls.Add(this.flowLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FilterGenerator";
             this.Text = "Foobar2000 filter generator";
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -196,6 +234,11 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bitratePicker)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            this.artistsTab.ResumeLayout(false);
+            this.artistsTab.PerformLayout();
+            this.albumsTab.ResumeLayout(false);
+            this.albumsTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -203,7 +246,6 @@
         #endregion
 
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox artistsTextbox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
@@ -211,9 +253,13 @@
         private System.Windows.Forms.CheckBox cbBitrate;
         private System.Windows.Forms.CheckBox cbFilterLive;
         private System.Windows.Forms.CheckBox cbFilterRemix;
-        private System.Windows.Forms.TextBox OutputTextbox;
+        private System.Windows.Forms.TextBox outputTextbox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox ExistingStringTextbox;
+        private System.Windows.Forms.TextBox existingStringTextbox;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage artistsTab;
+        private System.Windows.Forms.TabPage albumsTab;
+        private System.Windows.Forms.TextBox albumsTextbox;
 
     }
 }
