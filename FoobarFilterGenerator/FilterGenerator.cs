@@ -177,9 +177,9 @@ namespace FoobarFilterGenerator
                 {
                     continue;
                 }
-                if (!artistsTextbox.Text.Contains(artist))
+                if (!artistsTextbox.Text.Contains(artist.Trim()))
                 {
-                    artistsTextbox.AppendLine(artist);
+                    artistsTextbox.AppendLine(artist.Trim());
                 }
             }
         }
