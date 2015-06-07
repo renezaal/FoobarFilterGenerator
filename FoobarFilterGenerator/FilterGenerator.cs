@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -11,60 +6,25 @@ namespace FoobarFilterGenerator
 {
     public partial class FilterGenerator : Form
     {
+        #region class wide variables
+        /// <summary>
+        /// True if the code is modifying components on the form
+        /// </summary>
+        private bool _working = true;
+        #endregion
+
         public FilterGenerator()
         {
             InitializeComponent();
-            working = false;
+            _working = false;
         }
 
+        #region events
+        // for every change in the input, update the output
+        // it may not be the most beautiful way to do it, but at this point the user won't notice
         private void artistsTextbox_TextChanged(object sender, EventArgs e)
         {
             updateOutput();
-        }
-
-        private void updateOutput()
-        {
-            if (working)
-            {
-                return;
-            }
-            working = true;
-            StringBuilder sb = new StringBuilder();
-
-            sb.Append("(");
-
-            for (int i = 0; i < artistsTextbox.Lines.Length; i++)
-            {
-                string artist = artistsTextbox.Lines[i];
-                if (i != 0)
-                {
-                    sb.Append(" OR ");
-                }
-
-                artist = artist.Trim();
-
-                sb.AppendFormat(@"(Artist IS {0})", artist);
-            }
-
-            sb.Append(")");
-
-            if (cbFilterLive.Checked)
-            {
-                sb.Append(" AND (NOT Album HAS live) AND (NOT Comment HAS live)");
-            }
-
-            if (cbFilterRemix.Checked)
-            {
-                sb.Append(" AND (NOT Title HAS remix)");
-            }
-
-            if (cbBitrate.Checked)
-            {
-                sb.AppendFormat(@" AND (%bitrate% GREATER {0})", (int)Math.Round(bitratePicker.Value));
-            }
-
-            OutputTextbox.Text = sb.ToString();
-            working = false;
         }
 
         private void cbFilterRemix_CheckedChanged(object sender, EventArgs e)
@@ -89,38 +49,103 @@ namespace FoobarFilterGenerator
 
         private void OutputTextbox_MouseClick(object sender, MouseEventArgs e)
         {
+            // put the output on the clipboard as plain text
             Clipboard.SetText(OutputTextbox.Text);
+            // notify the user that the clipboard has been modified
             MessageBox.Show("Text has been copied to clipboard.");
         }
 
-        private bool working = true;
         private void ExistingStringTextbox_TextChanged(object sender, EventArgs e)
         {
             // check if we are already working on the string to prevent loops and unneeded delays
-            if (working)
+            if (_working)
             {
                 return;
             }
-            working = true;
+            _working = true;
 
 
             string text = ExistingStringTextbox.Text.Trim();
             if (text[0] == '(')
             {
+                // if the text starts with an opening bracket, assume it is a filter
                 interpretFilterString(text);
             }
             else
             {
+                // when it is not a filter, just assume it is a string of artists
                 interpretCopiedArtists(text);
             }
 
             // reset the string
             ExistingStringTextbox.Text = String.Empty;
             // reset the working variable to allow rerunning of the method
-            working = false;
+            _working = false;
             // update the output field now we're done interpreting
             updateOutput();
         }
+        #endregion
+
+        #region private methods
+        /// <summary>
+        /// Updates the output field based on the input fields
+        /// </summary>
+        private void updateOutput()
+        {
+            if (_working)
+            {
+                return;
+            }
+            _working = true;
+            StringBuilder sb = new StringBuilder();
+
+            // artist fields are grouped
+            sb.Append("(");
+
+            // add every artist to the filter
+            for (int i = 0; i < artistsTextbox.Lines.Length; i++)
+            {
+                string artist = artistsTextbox.Lines[i];
+                if (i != 0)
+                {
+                    sb.Append(" OR ");
+                }
+
+                artist = artist.Trim();
+
+                sb.AppendFormat(@"(Artist IS {0})", artist);
+            }
+
+            // end of the artist fields
+            sb.Append(")");
+
+            // if the filter live checkbox is checked, add the live filter
+            if (cbFilterLive.Checked)
+            {
+                sb.Append(" AND (NOT Album HAS live) AND (NOT Comment HAS live)");
+            }
+
+            // if the remix checkbox is checked, add the remix filter
+            if (cbFilterRemix.Checked)
+            {
+                sb.Append(" AND (NOT Title HAS remix)");
+            }
+
+            // if the bitrate checkbox is checked, add the bitrate filter
+            if (cbBitrate.Checked)
+            {
+                sb.AppendFormat(@" AND (%bitrate% GREATER {0})", (int)Math.Round(bitratePicker.Value));
+            }
+
+            // set the output
+            OutputTextbox.Text = sb.ToString();
+            _working = false;
+        }
+
+        /// <summary>
+        /// Interprets the given string as a filter. Assumes the filter is built up the same way this application would build it.
+        /// </summary>
+        /// <param name="text">Filter string</param>
         private void interpretFilterString(string text)
         {
             // interpret artists
@@ -168,28 +193,45 @@ namespace FoobarFilterGenerator
             text.Replace(bitrateSearchStringStart, "");
         }
 
+        /// <summary>
+        /// Interprets the given string as artists with semicolon separators
+        /// </summary>
+        /// <param name="text">Artists separated by semicolons</param>
         private void interpretCopiedArtists(string text)
         {
+            // split on the separator
             string[] artists = text.Split(';');
             foreach (string artist in artists)
             {
                 if (String.IsNullOrWhiteSpace(artist))
                 {
+                    // if the string is empty, just ignore it
                     continue;
                 }
+
                 if (!artistsTextbox.Text.Contains(artist.Trim()))
                 {
+                    // check of the artist is already defined. If it is not, add it
                     artistsTextbox.AppendLine(artist.Trim());
                 }
             }
         }
+        #endregion
+
+       
     }
 
     public static class WinFormsExtensions
     {
+        /// <summary>
+        /// Appends the provided value to the textbox on a new line
+        /// </summary>
+        /// <param name="source">Textbox to add the line to</param>
+        /// <param name="value">Value to be appended on a new line</param>
         public static void AppendLine(this TextBox source, string value)
         {
             if (source.Text.Length == 0)
+            // if there is no text in the box, don't add a line
                 source.Text = value;
             else
                 source.AppendText(String.Format("\r\n{0}", value));
