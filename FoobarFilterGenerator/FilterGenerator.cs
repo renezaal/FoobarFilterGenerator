@@ -99,42 +99,50 @@ namespace FoobarFilterGenerator
             _working = true;
             StringBuilder sb = new StringBuilder();
 
-            // artist fields are grouped
-            sb.Append("(");
 
             // add every artist to the filter
-            for (int i = 0; i < artistsTextbox.Lines.Length; i++)
+            bool isFirst = true;
+            foreach (string artist in artistsTextbox.Lines)
             {
-                string artist = artistsTextbox.Lines[i];
-                if (i != 0)
+                if (String.IsNullOrWhiteSpace(artist))
                 {
-                    sb.Append(" OR ");
+                    continue;
                 }
+                if (isFirst)
+                {
+                    // put this before the artist fields
+                    sb.Append("("); isFirst = false;
+                }
+                else { sb.Append(" OR "); }
 
-                artist = artist.Trim();
-
-                sb.AppendFormat(@"(Artist IS {0})", artist);
+                sb.AppendFormat(@"(Artist IS {0})", artist.Trim());
             }
 
-            // end of the artist fields
-            sb.Append(")");
+            if (!isFirst)
+            {
+                // if there was at least one artist, put this at the end of the artist fields
+                sb.Append(")");
+            }
 
             // if the filter live checkbox is checked, add the live filter
             if (cbFilterLive.Checked)
             {
-                sb.Append(" AND (NOT Album HAS live) AND (NOT Comment HAS live)");
+                if (!isFirst) { sb.Append(" AND "); } else { isFirst = false; }
+                sb.Append("(NOT Album HAS live) AND (NOT Comment HAS live)");
             }
 
             // if the remix checkbox is checked, add the remix filter
             if (cbFilterRemix.Checked)
             {
-                sb.Append(" AND (NOT Title HAS remix)");
+                if (!isFirst) { sb.Append(" AND "); } else { isFirst = false; }
+                sb.Append("(NOT Title HAS remix)");
             }
 
             // if the bitrate checkbox is checked, add the bitrate filter
             if (cbBitrate.Checked)
             {
-                sb.AppendFormat(@" AND (%bitrate% GREATER {0})", (int)Math.Round(bitratePicker.Value));
+                if (!isFirst) { sb.Append(" AND "); } else { isFirst = false; }
+                sb.AppendFormat(@"(%bitrate% GREATER {0})", (int)Math.Round(bitratePicker.Value));
             }
 
             // set the output
@@ -218,7 +226,7 @@ namespace FoobarFilterGenerator
         }
         #endregion
 
-       
+
     }
 
     public static class WinFormsExtensions
@@ -231,7 +239,7 @@ namespace FoobarFilterGenerator
         public static void AppendLine(this TextBox source, string value)
         {
             if (source.Text.Length == 0)
-            // if there is no text in the box, don't add a line
+                // if there is no text in the box, don't add a line
                 source.Text = value;
             else
                 source.AppendText(String.Format("\r\n{0}", value));
