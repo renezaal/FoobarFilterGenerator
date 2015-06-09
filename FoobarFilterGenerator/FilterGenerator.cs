@@ -46,6 +46,25 @@ namespace FoobarFilterGenerator
         {
             updateOutput();
         }
+        private void albumsTextbox_TextChanged(object sender, EventArgs e)
+        {
+            updateOutput();
+        }
+
+        private void whitelistDirsRB_CheckedChanged(object sender, EventArgs e)
+        {
+            updateOutput();
+        }
+
+        private void blacklistDirsRB_CheckedChanged(object sender, EventArgs e)
+        {
+            updateOutput();
+        }
+
+        private void directoriesTb_TextChanged(object sender, EventArgs e)
+        {
+            updateOutput();
+        }
 
         private void OutputTextbox_MouseClick(object sender, MouseEventArgs e)
         {
@@ -143,6 +162,22 @@ namespace FoobarFilterGenerator
                 sb.Append(")");
             }
 
+            // add every directory to the filter after sorting them
+            directoriesTb.SortLines();
+            string directoriesFormat = whitelistDirsRB.Checked ? @"(%directory% HAS {0})" : @"(NOT %directory% HAS {0})";
+            foreach (string directory in directoriesTb.Lines)
+            {
+                if (String.IsNullOrWhiteSpace(directory))
+                {
+                    continue;
+                }
+
+                if (isFirst) { isFirst = false; }
+                else { sb.Append(" AND "); }
+
+                sb.AppendFormat(directoriesFormat, directory.Trim());
+            }
+
             // if the filter live checkbox is checked, add the live filter
             if (cbFilterLive.Checked)
             {
@@ -176,24 +211,28 @@ namespace FoobarFilterGenerator
         private void interpretFilterString(string text)
         {
             // interpret artists
-            string artistSearchString = "(Artist IS ";
-            for (int i = text.IndexOf(artistSearchString); i >= 0; i = text.IndexOf(artistSearchString))
-            {
-                int closingBracketIndex = text.Substring(i + artistSearchString.Length).IndexOf(')');
-                string subText = text.Substring(i + artistSearchString.Length, closingBracketIndex);
-                artistsTextbox.AppendLine(subText);
-                text = text.Replace(artistSearchString + subText + ')', "").Trim();
-            }
+            genericEntryProcessor(text, "(Artist IS ", artistsTextbox);
 
             // interpret albums
-            string albumSearchString = "(Album IS ";
-            for (int i = text.IndexOf(albumSearchString); i >= 0; i = text.IndexOf(albumSearchString))
+            genericEntryProcessor(text, "(Album IS ", albumsTextbox);
+
+            // interpret directories
+            // since we only interpret either a blacklist or a whitelist of directories, we choose what has the higher priority
+            // I chose to go with a blacklist, that is the most natural when we have no entries
+            int blackListEntries = genericEntryProcessor(text, @"(NOT %directory% HAS ", directoriesTb);
+            if (blackListEntries > 0)
             {
-                int closingBracketIndex = text.Substring(i + albumSearchString.Length).IndexOf(')');
-                string subText = text.Substring(i + albumSearchString.Length, closingBracketIndex);
-                albumsTextbox.AppendLine(subText);
-                text = text.Replace(albumSearchString + subText + ')', "").Trim();
+                blacklistDirsRB.Checked = true;
             }
+            else
+            {
+                int whitelistEntries = genericEntryProcessor(text, @"(%directory% HAS ", directoriesTb);
+                if (whitelistEntries > 0)
+                {
+                    whitelistDirsRB.Checked = true;
+                }
+            }
+
 
             // interpret live filter
             string liveSearchStringStart = "(NOT ";
@@ -231,6 +270,30 @@ namespace FoobarFilterGenerator
         }
 
         /// <summary>
+        /// Processes all the hits in the text for the search into the provided textbox
+        /// Returns the number of processed entries
+        /// </summary>
+        /// <param name="text">The text to search through</param>
+        /// <param name="search">The start of the entry to search for</param>
+        /// <param name="tb">The textbox that will contain the entries</param>
+        /// <returns>Number of processed entries</returns>
+        private int genericEntryProcessor(string text, string search, TextBox tb)
+        {
+            int retVal = 0;
+            int closingBracketIndex = 0;
+            string subText = String.Empty;
+            for (int i = text.IndexOf(search); i >= 0; i = text.IndexOf(search))
+            {
+                closingBracketIndex = text.Substring(i + search.Length).IndexOf(')');
+                subText = text.Substring(i + search.Length, closingBracketIndex);
+                tb.AppendLine(subText);
+                text = text.Replace(search + subText + ')', "").Trim();
+                retVal++;
+            }
+            return retVal;
+        }
+
+        /// <summary>
         /// Interprets the given string as artists with semicolon separators
         /// </summary>
         /// <param name="text">Artists separated by semicolons</param>
@@ -255,10 +318,6 @@ namespace FoobarFilterGenerator
         }
         #endregion
 
-        private void albumsTextbox_TextChanged(object sender, EventArgs e)
-        {
-            updateOutput();
-        }
 
 
     }

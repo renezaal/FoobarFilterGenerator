@@ -35,6 +35,11 @@
             this.artistsTextbox = new System.Windows.Forms.TextBox();
             this.albumsTab = new System.Windows.Forms.TabPage();
             this.albumsTextbox = new System.Windows.Forms.TextBox();
+            this.directoriesTab = new System.Windows.Forms.TabPage();
+            this.directoriesTb = new System.Windows.Forms.TextBox();
+            this.whitelistBlacklistDirsGB = new System.Windows.Forms.GroupBox();
+            this.blacklistDirsRB = new System.Windows.Forms.RadioButton();
+            this.whitelistDirsRB = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.bitratePicker = new System.Windows.Forms.NumericUpDown();
@@ -45,6 +50,8 @@
             this.tabControl1.SuspendLayout();
             this.artistsTab.SuspendLayout();
             this.albumsTab.SuspendLayout();
+            this.directoriesTab.SuspendLayout();
+            this.whitelistBlacklistDirsGB.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bitratePicker)).BeginInit();
             this.SuspendLayout();
@@ -75,6 +82,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.artistsTab);
             this.tabControl1.Controls.Add(this.albumsTab);
+            this.tabControl1.Controls.Add(this.directoriesTab);
             this.tabControl1.Location = new System.Drawing.Point(2, 41);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -111,7 +119,7 @@
             this.albumsTab.Location = new System.Drawing.Point(4, 22);
             this.albumsTab.Name = "albumsTab";
             this.albumsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.albumsTab.Size = new System.Drawing.Size(298, 158);
+            this.albumsTab.Size = new System.Drawing.Size(302, 174);
             this.albumsTab.TabIndex = 1;
             this.albumsTab.Text = "Albums";
             this.albumsTab.UseVisualStyleBackColor = true;
@@ -123,9 +131,70 @@
             this.albumsTextbox.Multiline = true;
             this.albumsTextbox.Name = "albumsTextbox";
             this.albumsTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.albumsTextbox.Size = new System.Drawing.Size(292, 152);
+            this.albumsTextbox.Size = new System.Drawing.Size(296, 168);
             this.albumsTextbox.TabIndex = 0;
             this.albumsTextbox.TextChanged += new System.EventHandler(this.albumsTextbox_TextChanged);
+            // 
+            // directoriesTab
+            // 
+            this.directoriesTab.Controls.Add(this.directoriesTb);
+            this.directoriesTab.Controls.Add(this.whitelistBlacklistDirsGB);
+            this.directoriesTab.Location = new System.Drawing.Point(4, 22);
+            this.directoriesTab.Name = "directoriesTab";
+            this.directoriesTab.Padding = new System.Windows.Forms.Padding(3);
+            this.directoriesTab.Size = new System.Drawing.Size(302, 174);
+            this.directoriesTab.TabIndex = 2;
+            this.directoriesTab.Text = "Directories";
+            this.directoriesTab.UseVisualStyleBackColor = true;
+            // 
+            // directoriesTb
+            // 
+            this.directoriesTb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.directoriesTb.Location = new System.Drawing.Point(6, 41);
+            this.directoriesTb.Multiline = true;
+            this.directoriesTb.Name = "directoriesTb";
+            this.directoriesTb.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.directoriesTb.Size = new System.Drawing.Size(290, 130);
+            this.directoriesTb.TabIndex = 1;
+            this.directoriesTb.TextChanged += new System.EventHandler(this.directoriesTb_TextChanged);
+            // 
+            // whitelistBlacklistDirsGB
+            // 
+            this.whitelistBlacklistDirsGB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.whitelistBlacklistDirsGB.Controls.Add(this.blacklistDirsRB);
+            this.whitelistBlacklistDirsGB.Controls.Add(this.whitelistDirsRB);
+            this.whitelistBlacklistDirsGB.Location = new System.Drawing.Point(6, 6);
+            this.whitelistBlacklistDirsGB.Name = "whitelistBlacklistDirsGB";
+            this.whitelistBlacklistDirsGB.Size = new System.Drawing.Size(290, 36);
+            this.whitelistBlacklistDirsGB.TabIndex = 0;
+            this.whitelistBlacklistDirsGB.TabStop = false;
+            // 
+            // blacklistDirsRB
+            // 
+            this.blacklistDirsRB.AutoSize = true;
+            this.blacklistDirsRB.Checked = true;
+            this.blacklistDirsRB.Location = new System.Drawing.Point(120, 12);
+            this.blacklistDirsRB.Name = "blacklistDirsRB";
+            this.blacklistDirsRB.Size = new System.Drawing.Size(64, 17);
+            this.blacklistDirsRB.TabIndex = 1;
+            this.blacklistDirsRB.TabStop = true;
+            this.blacklistDirsRB.Text = "Blacklist";
+            this.blacklistDirsRB.UseVisualStyleBackColor = true;
+            this.blacklistDirsRB.CheckedChanged += new System.EventHandler(this.blacklistDirsRB_CheckedChanged);
+            // 
+            // whitelistDirsRB
+            // 
+            this.whitelistDirsRB.AutoSize = true;
+            this.whitelistDirsRB.Location = new System.Drawing.Point(6, 12);
+            this.whitelistDirsRB.Name = "whitelistDirsRB";
+            this.whitelistDirsRB.Size = new System.Drawing.Size(65, 17);
+            this.whitelistDirsRB.TabIndex = 0;
+            this.whitelistDirsRB.Text = "Whitelist";
+            this.whitelistDirsRB.UseVisualStyleBackColor = true;
+            this.whitelistDirsRB.CheckedChanged += new System.EventHandler(this.whitelistDirsRB_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -233,6 +302,10 @@
             this.artistsTab.PerformLayout();
             this.albumsTab.ResumeLayout(false);
             this.albumsTab.PerformLayout();
+            this.directoriesTab.ResumeLayout(false);
+            this.directoriesTab.PerformLayout();
+            this.whitelistBlacklistDirsGB.ResumeLayout(false);
+            this.whitelistBlacklistDirsGB.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bitratePicker)).EndInit();
@@ -257,6 +330,11 @@
         private System.Windows.Forms.TabPage artistsTab;
         private System.Windows.Forms.TabPage albumsTab;
         private System.Windows.Forms.TextBox albumsTextbox;
+        private System.Windows.Forms.TabPage directoriesTab;
+        private System.Windows.Forms.TextBox directoriesTb;
+        private System.Windows.Forms.GroupBox whitelistBlacklistDirsGB;
+        private System.Windows.Forms.RadioButton blacklistDirsRB;
+        private System.Windows.Forms.RadioButton whitelistDirsRB;
 
     }
 }
