@@ -286,7 +286,10 @@ namespace FoobarFilterGenerator
             {
                 closingBracketIndex = text.Substring(i + search.Length).IndexOf(')');
                 subText = text.Substring(i + search.Length, closingBracketIndex);
-                tb.AppendLine(subText);
+                if (Array.IndexOf(tb.Lines, subText.Trim()) < 0)
+                {
+                    tb.AppendLine(subText.Trim());
+                }
                 text = text.Replace(search + subText + ')', "").Trim();
                 retVal++;
             }
