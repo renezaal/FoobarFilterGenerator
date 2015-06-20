@@ -1,7 +1,7 @@
 # FoobarFilterGenerator
 
 <P><h4>A handy tool for creating and modifying filters for Foobar2000<h4></P>
-<P>Downloads: <A HREF="https://copy.com/wms1nGZwH8VW4gYj">Executable</A> or <A HREF="https://copy.com/VrwofDO4Dee1hElo">setup</A></P>
+<P>Downloads: <A HREF="https://copy.com/8TVpXN02csdP3yk6">Executable</A> or <A HREF="https://copy.com/UfyusvSmUyzaduQx">setup</A></P>
 <P><h5>Features</h5>
   <UL><LI>Filter on artists</LI>
   <LI>Filter on albums</LI>
