@@ -243,6 +243,8 @@
             // cbBitrate
             // 
             this.cbBitrate.AutoSize = true;
+            this.cbBitrate.Checked = true;
+            this.cbBitrate.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbBitrate.Location = new System.Drawing.Point(10, 42);
             this.cbBitrate.Name = "cbBitrate";
             this.cbBitrate.Size = new System.Drawing.Size(114, 17);
@@ -254,6 +256,8 @@
             // cbFilterLive
             // 
             this.cbFilterLive.AutoSize = true;
+            this.cbFilterLive.Checked = true;
+            this.cbFilterLive.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbFilterLive.Location = new System.Drawing.Point(10, 19);
             this.cbFilterLive.Name = "cbFilterLive";
             this.cbFilterLive.Size = new System.Drawing.Size(91, 17);
@@ -265,6 +269,8 @@
             // cbFilterRemix
             // 
             this.cbFilterRemix.AutoSize = true;
+            this.cbFilterRemix.Checked = true;
+            this.cbFilterRemix.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbFilterRemix.Location = new System.Drawing.Point(131, 19);
             this.cbFilterRemix.Name = "cbFilterRemix";
             this.cbFilterRemix.Size = new System.Drawing.Size(78, 17);
@@ -277,6 +283,7 @@
             // 
             this.outputTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.outputTextbox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.outputTextbox.Location = new System.Drawing.Point(2, 320);
             this.outputTextbox.Name = "outputTextbox";
             this.outputTextbox.ReadOnly = true;

@@ -17,6 +17,7 @@ namespace FoobarFilterGenerator
         {
             InitializeComponent();
             _working = false;
+            updateOutput();
         }
 
         #region events
@@ -182,7 +183,7 @@ namespace FoobarFilterGenerator
             if (cbFilterLive.Checked)
             {
                 if (!isFirst) { sb.Append(" AND "); } else { isFirst = false; }
-                sb.Append("(NOT Album HAS live) AND (NOT Comment HAS live)");
+                sb.Append("(NOT Comment HAS live) AND (NOT MUSICBRAINZ ALBUM TYPE IS live)");
             }
 
             // if the remix checkbox is checked, add the remix filter
@@ -235,13 +236,19 @@ namespace FoobarFilterGenerator
 
 
             // interpret live filter
-            string liveSearchStringStart = "(NOT ";
+            string liveSearchStringStart = "(NOT Comment";
             string liveSearchStringEnd = "live)";
             int start = text.IndexOf(liveSearchStringStart);
-            int end = text.IndexOf(liveSearchStringEnd);
+            int end = text.IndexOf(liveSearchStringEnd, start);
             cbFilterLive.Checked = start >= 0 && end >= 0;
-            text.Replace("(NOT Album HAS live)", "");
             text.Replace("(NOT Comment HAS live)", "");
+
+            if (!cbFilterLive.Checked)
+            {
+                string liveSearchString = "(NOT MUSICBRAINZ ALBUM TYPE IS live)";
+                cbFilterLive.Checked = text.IndexOf(liveSearchString) >= 0;
+                text.Replace("(NOT MUSICBRAINZ ALBUM TYPE IS live)", "");
+            }
 
             // interpret remix filter
             string remixFilter = "(NOT Title HAS remix)";
