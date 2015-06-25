@@ -97,8 +97,16 @@ namespace FoobarFilterGenerator
             }
             else
             {
-                // when it is not a filter, just assume it is a string of artists
-                interpretCopiedArtists(text);
+                // when it is not a filter, just assume it is a string of entries
+                // we choose to assume that the entries are of artist or album type depending on the opened tab
+                if (tabControl.SelectedTab==albumsTab)
+                {
+                    interpretCopiedEntries(text, albumsTextbox);
+                }
+                else
+                {
+                    interpretCopiedEntries(text, artistsTextbox);
+                }
             }
 
             // reset the string
@@ -309,25 +317,35 @@ namespace FoobarFilterGenerator
         }
 
         /// <summary>
-        /// Interprets the given string as artists with semicolon separators
+        /// Interprets the given string as entries with semicolon separators or one entry per line
         /// </summary>
-        /// <param name="text">Artists separated by semicolons</param>
-        private void interpretCopiedArtists(string text)
+        /// <param name="text">Entries separated by semicolons or linebreaks</param>
+        private void interpretCopiedEntries(string text,TextBox textBox)
         {
-            // split on the separator
-            string[] artists = text.Split(';');
-            foreach (string artist in artists)
+            string[] entries;
+            // split on the separator, which can be the newline character
+            if (text.Contains(Environment.NewLine))
             {
-                if (String.IsNullOrWhiteSpace(artist))
+                entries = text.Split(Environment.NewLine.ToCharArray());
+            }
+            else
+            {
+                entries = text.Split(';');
+            }
+
+            string cleanEntry = String.Empty;
+            foreach (string entry in entries)
+            {
+                if (String.IsNullOrWhiteSpace(entry))
                 {
                     // if the string is empty, just ignore it
                     continue;
                 }
 
-                if (!artistsTextbox.Text.Contains(artist.Trim()))
+                if (!textBox.Text.Contains(entry.Trim()))
                 {
-                    // check of the artist is already defined. If it is not, add it
-                    artistsTextbox.AppendLine(artist.Trim());
+                    // check of the entry is already defined. If it is not, add it
+                    textBox.AppendLine(entry.Trim());
                 }
             }
         }

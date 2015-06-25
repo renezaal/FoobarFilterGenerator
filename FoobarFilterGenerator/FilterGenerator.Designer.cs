@@ -30,7 +30,7 @@
         {
             this.label3 = new System.Windows.Forms.Label();
             this.existingStringTextbox = new System.Windows.Forms.TextBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.artistsTab = new System.Windows.Forms.TabPage();
             this.artistsTextbox = new System.Windows.Forms.TextBox();
             this.albumsTab = new System.Windows.Forms.TabPage();
@@ -47,7 +47,7 @@
             this.cbFilterLive = new System.Windows.Forms.CheckBox();
             this.cbFilterRemix = new System.Windows.Forms.CheckBox();
             this.outputTextbox = new System.Windows.Forms.TextBox();
-            this.tabControl1.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.artistsTab.SuspendLayout();
             this.albumsTab.SuspendLayout();
             this.directoriesTab.SuspendLayout();
@@ -70,24 +70,25 @@
             this.existingStringTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.existingStringTextbox.Location = new System.Drawing.Point(2, 20);
+            this.existingStringTextbox.Multiline = true;
             this.existingStringTextbox.Name = "existingStringTextbox";
             this.existingStringTextbox.Size = new System.Drawing.Size(310, 20);
             this.existingStringTextbox.TabIndex = 6;
             this.existingStringTextbox.TextChanged += new System.EventHandler(this.ExistingStringTextbox_TextChanged);
             // 
-            // tabControl1
+            // tabControl
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.artistsTab);
-            this.tabControl1.Controls.Add(this.albumsTab);
-            this.tabControl1.Controls.Add(this.directoriesTab);
-            this.tabControl1.Location = new System.Drawing.Point(2, 41);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(310, 200);
-            this.tabControl1.TabIndex = 8;
+            this.tabControl.Controls.Add(this.artistsTab);
+            this.tabControl.Controls.Add(this.albumsTab);
+            this.tabControl.Controls.Add(this.directoriesTab);
+            this.tabControl.Location = new System.Drawing.Point(2, 41);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(310, 200);
+            this.tabControl.TabIndex = 8;
             // 
             // artistsTab
             // 
@@ -299,13 +300,13 @@
             this.ClientSize = new System.Drawing.Size(314, 343);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.existingStringTextbox);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.outputTextbox);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FilterGenerator";
             this.Text = "Foobar2000 filter generator";
-            this.tabControl1.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.artistsTab.ResumeLayout(false);
             this.artistsTab.PerformLayout();
             this.albumsTab.ResumeLayout(false);
@@ -334,7 +335,7 @@
         private System.Windows.Forms.TextBox outputTextbox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox existingStringTextbox;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage artistsTab;
         private System.Windows.Forms.TabPage albumsTab;
         private System.Windows.Forms.TextBox albumsTextbox;
