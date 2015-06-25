@@ -11,6 +11,10 @@ namespace FoobarFilterGenerator
         /// True if the code is modifying components on the form
         /// </summary>
         private bool _working = true;
+        /// <summary>
+        /// Contains the output that should also show in the output textbox
+        /// </summary>
+        private string outputString = String.Empty;
         #endregion
 
         public FilterGenerator()
@@ -70,7 +74,7 @@ namespace FoobarFilterGenerator
         private void OutputTextbox_MouseClick(object sender, MouseEventArgs e)
         {
             // put the output on the clipboard as plain text
-            Clipboard.SetText(outputTextbox.Text);
+            Clipboard.SetText(outputString);
             // notify the user that the clipboard has been modified
             MessageBox.Show("Text has been copied to clipboard.");
         }
@@ -202,6 +206,7 @@ namespace FoobarFilterGenerator
 
             // set the output
             outputTextbox.Text = sb.ToString();
+            outputString = sb.ToString();
             _working = false;
         }
 

@@ -285,6 +285,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.outputTextbox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.outputTextbox.Location = new System.Drawing.Point(2, 320);
+            this.outputTextbox.Multiline = true;
             this.outputTextbox.Name = "outputTextbox";
             this.outputTextbox.ReadOnly = true;
             this.outputTextbox.Size = new System.Drawing.Size(310, 20);
